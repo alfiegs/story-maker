@@ -3,8 +3,10 @@ import {Button} from 'react-bootstrap';
 import {addSentence, showFirstWord, displayNewWordAction} from '../actions/actions';
 import {connect} from 'react-redux';
 import commonWords from '../../data/commonWords';
+import config from '../../config';
 
 
+var key = config.MW_API_Key;
 
 
 class WriteSentence extends React.Component {
@@ -23,7 +25,7 @@ class WriteSentence extends React.Component {
         var randomWord = wordList[Math.floor(Math.random()*wordList.length)]; //randomWord selects a random word from the common words list
         // console.log(`random word: ${randomWord}`)
         //Word_URL inserts the random word from the common word list into the Webster API call
-        let Word_URL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${randomWord}?key=e760fb57-279a-419f-b4c7-6222182bebc3`
+        let Word_URL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${randomWord}?key=${key}`
         fetch(Word_URL)
         .then((response)=>{
             return response.json()
@@ -45,7 +47,7 @@ class WriteSentence extends React.Component {
         var randomWord = wordList[Math.floor(Math.random()*wordList.length)]; //randomWord selects a random word from the common words list
         // console.log(`random word: ${randomWord}`)
         //Word_URL inserts the random word from the common word list into the Webster API call
-        let Word_URL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${randomWord}?key=e760fb57-279a-419f-b4c7-6222182bebc3`
+        let Word_URL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${randomWord}?key=${key}`
         fetch(Word_URL)
         .then((response)=>{
             return response.json()
