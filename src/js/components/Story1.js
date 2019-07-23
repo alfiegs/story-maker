@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {saveStoryAction} from '../actions/saveStoryAction';
-import {Badge, Button} from 'react-bootstrap';
+import {Badge} from 'react-bootstrap';
 
 
 class Story extends React.Component {
@@ -19,19 +19,20 @@ class Story extends React.Component {
             ],
             storySaver: [],
             seed: "",
+            pageLoaded: false,
             firstSeed: ""
         }
     }
 
-    // componentWillMount(){
-    //     if(this.state.pageLoaded === false){
-    //     let num = Math.floor(Math.random() * this.state.seedSentences.length);
-    //     this.setState({
-    //         seed: this.state.seedSentences[num],
-    //         pageLoaded: true
-    //     })
-    // }
-    // }
+    componentWillMount(){
+        if(this.state.pageLoaded === false){
+        let num = Math.floor(Math.random() * this.state.seedSentences.length);
+        this.setState({
+            seed: this.state.seedSentences[num],
+            pageLoaded: true
+        })
+    }
+    }
 
 
 
@@ -39,7 +40,7 @@ class Story extends React.Component {
         console.log(`storyToSave: ${this.state.sentenceList}`)
         // if(this.state.storySaverClicked === false)
         this.setState({
-            storySaver: this.state.storySaver.concat(this.props.seed + this.props.sentenceList),
+            storySaver: this.state.storySaver.concat(this.state.seed + this.props.sentenceList),
             storySaverClicked: true
         })
         this.props.toSaveStory({
@@ -72,21 +73,11 @@ class Story extends React.Component {
         }
     }
 
-    startStory = () => {
-        let num = Math.floor(Math.random() * this.state.seedSentences.length);
-        this.setState({
-            seed: this.state.seedSentences[num],
-        })
-        this.props.toSaveStory({seed: this.state.seed})
-    }
-
 
     render() {
         return (
             <>  
-                <Button onClick={this.startStory}>Start</Button>
-                <br />
-                <b>{this.props.seed}</b>
+                <b>{this.state.seed}</b>
                 {this.props.sentenceList.map((sentence)=>{
                     return <span>{sentence} </span>
                 })}
@@ -105,8 +96,7 @@ let mapStateToProps = (state) => {
     return{
         sentenceList: state.sentenceList,
         sentencesLeft: state.sentencesLeft,
-        savedStory: state.savedStory,
-        seed: state.seed
+        savedStory: state.savedStory
     }
 }
 

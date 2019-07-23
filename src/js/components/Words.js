@@ -1,7 +1,8 @@
 import React from 'react';
 import commonWords from '../../data/commonWords';
 import {connect} from 'react-redux';
-import {addWordsAction} from '../actions/actions';
+import {addToSavedWords} from '../actions/actions';
+import {Badge, Button, Popover, OverlayTrigger} from 'react-bootstrap';
 
 
 
@@ -9,46 +10,91 @@ class Words extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            words: []
+            firstWord: [],
+            words: [],
+            clicked: false
         }
     }
 
+    // saveToLocalStorage = () => {
+    //     localStorage.setItem("savedWords", this.props.savedWords)
+    // }
 
-
-
-
-    componentWillMount(){
-        let wordList = commonWords.commonWords //wordList is the list of common words from the commonWords JSON file imported above
-        var randomWord = wordList[Math.floor(Math.random()*wordList.length)]; //randomWord selects a random word from the common words list
-        console.log(`random word: ${randomWord}`)
-        //Word_URL inserts the random word from the common word list into the Webster API call
-        let Word_URL = `https://dictionaryapi.com/api/v3/references/collegiate/json/${randomWord}?key=e760fb57-279a-419f-b4c7-6222182bebc3`
-        fetch(Word_URL)
-        .then((response)=>{
-            return response.json()
-        })
-        .then((data)=>{
-            console.log(`data: ${data}`)
-            console.log(`data[0].hwi.hw: ${data[0].hwi.hw}`)
-            this.setState({
-                words: data
-            }) //sets a new local state for 'words': it is now the data received from the API call (an array of strings)
-            this.props.addWordsDispatcher(data)
-        })
+    saveButtonHandler = (word) => {
+        this.props.onSaveWord(word);
     }
+
+
 
     
     render() {
+        if(this.props.sentencesLeft === 10){
+            return (
+            <>
+            <ul>
+            {this.props.firstWord.map((word, index)=>{
+            if(index === 0){ //only return first item in word array
+                if(word.meta.id.includes(":")){ //word.meta.id often includes ":1" at the end of it, this if statement checks to see if the string contains ":" and if it does it lops off the last two characters
+                    word.meta.id = word.meta.id.substring(0, word.meta.id.length - 2)
+                }
+                return <li>
+                    {/* headword */}
+                <b>{word.meta.id}</b> - 
+                {/* part of speech */}
+                <i> {word.fl} </i>
+                {/* {console.log(`word to log ${word.hwi.hw}`)} */}
+                <Badge
+                variant="primary"
+                id="save-word-button" 
+                onClick={
+                    ()=>{this.saveButtonHandler(word)} 
+                    } 
+                pill 
+                >
+                    Save
+                </Badge>
+                <br />
+                <br />
+                <ul>
+                    {/* definition (array) */}
+                {word.shortdef.map((def) => {
+                    return <li>{def}</li>
+                })}
+                </ul>
+                </li>
+            }
+                })}
+            </ul>
+            <br />
+            </>
+            )
+        }
+        else{
         return (
             <>
                 <ul>
-                    {this.props.wordList.map((word, index)=>{
+                    {this.props.wordsFromSubmitButton.map((word, index)=>{
                     if(index === 0){ //only return first item in word array
+                        if(word.meta.id.includes(":")){ //word.meta.id often includes ":1" at the end of it, this if statement checks to see if the string contains ":" and if it does it lops off the last two characters
+                            word.meta.id = word.meta.id.substring(0, word.meta.id.length - 2)
+                        }
                         return <li>
                             {/* headword */}
-                        <b>{word.hwi.hw}</b> - 
+                        <b>{word.meta.id}</b> - 
                         {/* part of speech */}
-                        <span> {word.fl}</span>
+                        <i> {word.fl} </i>
+                        {/* {console.log(`word to log ${word.hwi.hw}`)} */}
+                        <Badge
+                        variant="primary"
+                        id="save-word-button" 
+                        onClick={
+                            ()=>{this.saveButtonHandler(word)} 
+                            } 
+                        pill 
+                        >
+                            Save
+                        </Badge>
+                        <br />
                         <br />
                         <ul>
                             {/* definition (array) */}
@@ -60,28 +106,29 @@ class Words extends React.Component {
                         </li>
                     }
                         })}
-                    
-
                 </ul>
-            </>
-        );
+                </>
+                );
+                    }
     }
 }
 
 
 let mapStateToProps = (state) => {
-    //accesses global state and passes it into props that can be accessed in the component. sentenceList is an array that can be accessed in the component above
+    //accesses global state and passes it into props that can be accessed in the component. wordsFromSubmitButton is an array that can be accessed in the component above
     return{
-        wordList: state.wordList
+        wordsFromSubmitButton: state.wordsFromSubmitButton,
+        sentencesLeft: state.sentencesLeft,
+        firstWord: state.firstWord
     }
 }
 
+
+
 let mapDispatchToProps = (dispatch) =>{
-    //dispatches an action to the store
-    //addWordsDispatcher is called in the componentWillMount function above with data from the API call to the dictionary
-    //data is now stored in the store
-    return {
-        addWordsDispatcher: (data) => dispatch(addWordsAction(data))
+    //dispatches word from save button click into the global state via the addToSavedWords action and reducer
+    return{
+        onSaveWord: (dataFromSaveWord) => dispatch(addToSavedWords(dataFromSaveWord))
     }
 }
 

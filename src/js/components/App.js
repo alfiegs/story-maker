@@ -3,6 +3,9 @@ import {Container, Row, Col} from 'react-bootstrap';
 import WriteSentence from './WriteSentence';
 import Story from './Story';
 import Words from './Words';
+import '../../App.css';
+import {connect} from 'react-redux';
+
 
 
 class App extends React.Component {
@@ -14,28 +17,40 @@ class App extends React.Component {
     render() {
         return (
             <>
-                <Container fluid>
+                <Container fluid id="page-container">
                     <Row>
-                        <Col md={4} id="col1" class="column">
-                            <h2>Story</h2>
-                            <Story />
-                        </Col>
-                        <Col md={4} class="column">
-                            <h2>Write Your Sentence</h2>
-                            <WriteSentence />
-                        </Col>
-                        <Col md={4} class="column">
-                            <h2>Words</h2>
+                        <Col md={3} class="column" id="words-box">
+                            <h5>Words</h5>
                             <Words />
                         </Col>
+                        <Col id="col1" class="column">
+                            <div id="story-box" className=".z-depth-5">
+                            <h5 class='alignleft'>Your Story:</h5>
+                            <span class='alignright'>Sentences Left: {this.props.sentencesLeft}</span>
+                            <div id='clear'></div>
+                            <hr />
+                            <Story />
+                            </div>
+                            <br />
+                            <div id="sentence-box">
+                            <h5>Write Your Sentence Here:</h5>
+                            <WriteSentence />
+                            </div>
+                        </Col>
+                        <Col md={1}></Col>
                     </Row> 
                 </Container>
-
             </>
         );
     }
 }
 
+let mapStateToProps = (state) => {
+    //accesses global state and passes it into props that can be accessed in the component. sentenceList is an array that can be accessed in the component above
+    return{
+        sentencesLeft: state.sentencesLeft
+    }
+}
 
 
-export default App
+export default connect(mapStateToProps)(App)

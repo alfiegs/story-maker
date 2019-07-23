@@ -1,0 +1,13 @@
+
+
+
+
+
+
+>>Make story stop at 10 sentences
+
+>>Fix punctuation
+
+
+>>Make new word appear automatically on page load (now it requires clicking add sentence 2 times)
+

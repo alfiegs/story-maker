@@ -31,3 +31,87 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* NAVBAR */
+
+.navlinker{
+  color: white;
+}
+
+a:hover.navlinker{
+  color: blue;
+  text-decoration: none;
+
+}
+
+
+/* APP */
+
+body{
+  background-color: rgb(241, 244, 248);
+}
+
+#page-container{
+  margin: 5vh;
+}
+
+#story-box{
+  background-color: white;
+  height: 50vh;
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.alignleft{
+  float: left
+}
+
+.alignright{
+  float: right
+}
+
+#clear{
+  clear: both;
+}
+
+#sentence-input{
+  height: 10vh;
+}
+
+#words-box{
+  background-color: white;
+  padding: 10px 50px 10px 10px;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+#sentence-box{
+  padding: 10px;
+  
+}
+
+
+/* MY WORDS */
+
+#my-words-box{
+  background-color: white;
+  margin: 0px 0px 0px 0px;
+  padding: 50px;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+/* MY STORIES */
+
+.saved-story-box{
+  background-color: white;
+  width: 80vw;
+  padding: 20px;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
